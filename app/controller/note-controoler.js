@@ -66,6 +66,7 @@ noteCntrl.remove=async(req,res)=>{
 }
 noteCntrl.share=async(req,res)=>{
     const noteId = req.params.id
+    console.log(req.body)
     try{
         const { userId, permission } = req.body
     
@@ -84,5 +85,15 @@ noteCntrl.share=async(req,res)=>{
     }catch(err){
         res.status(500).json({error:"internal server error"})
     }
+}
+noteCntrl.getShare=async(req,res)=>{
+   const userId=req.user.id
+   console.log(userId)
+   try {
+    const sharedNotes = await Note.find({ 'sharedWith.userId': userId })
+    res.status(200).json(sharedNotes)
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error' })
+  }
 }
 module.exports=noteCntrl

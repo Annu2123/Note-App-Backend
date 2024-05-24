@@ -22,6 +22,7 @@ app.put('/api/update/note/:id',authenticateUser,checkSchema(noteUpdateValidation
 app.delete('/api/note/delete/:id',authenticateUser,noteCntrl.remove)
 app.post('/api/note/share/:id',authenticateUser,noteCntrl.share)
 app.get('/api/users',authenticateUser,usersCntrl.users)
+app.get('/api/share/notes',authenticateUser,noteCntrl.getShare)
 app.listen(port,()=>{
     console.log("server is running in port" + port)
 })
