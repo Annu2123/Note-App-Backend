@@ -23,6 +23,7 @@ app.delete('/api/note/delete/:id',authenticateUser,noteCntrl.remove)
 app.post('/api/note/share/:id',authenticateUser,noteCntrl.share)
 app.get('/api/users',authenticateUser,usersCntrl.users)
 app.get('/api/share/notes',authenticateUser,noteCntrl.getShare)
+app.put('/api/note/update/:id',authenticateUser,noteCntrl.update)
 app.listen(port,()=>{
     console.log("server is running in port" + port)
 })

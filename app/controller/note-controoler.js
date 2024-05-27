@@ -96,4 +96,31 @@ noteCntrl.getShare=async(req,res)=>{
     res.status(500).json({ error: 'Internal server error' })
   }
 }
+noteCntrl.update=async(req,res)=>{
+  const { id } = req.params
+  const body = req.body
+  try {
+    const existingNote = await Note.findById(id);
+
+    if (!existingNote) {
+      return res.status(404).send({ error: 'Note not found' });
+    }
+
+  console.log(existingNote)
+    const hasPermission = existingNote.userId.equals(req.user.id) || 
+      existingNote.sharedWith.some(shared => 
+        shared.userId.equals(req.user.id) && shared.permission === 'write'
+      )
+
+    if (!hasPermission) {
+      return res.status(403).send({ error: 'You do not have permission to edit this note' })
+    }
+const note=await Note.findByIdAndUpdate(id,body,{new:true})
+
+    res.send(note)
+  } catch (error) {
+    res.status(500).json({error:"internal server error"})
+  }
+
+}
 module.exports=noteCntrl
